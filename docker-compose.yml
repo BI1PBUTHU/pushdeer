@@ -1,41 +1,26 @@
-version: '2.1'
+version: '2'
 services:
-  mariadb:
-    image: 'mariadb:10.5.8-focal'
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "--silent","--password=$$MYSQL_ROOT_PASSWORD"]
-      timeout: 10s
-      retries: 3
-    volumes:
-      - 'mariadb_data:/var/lib/mysql'
-    environment:
-      - MYSQL_ROOT_PASSWORD=theVeryp@ssw0rd
-      - MYSQL_DATABASE=pushdeer
-    ports:
-      - '3306:3306' 
   redis: 
     image: 'bitnami/redis:6.0.16'
-    healthcheck:
-      test: ["CMD", "redis-cli","ping"]
     environment:
-      - ALLOW_EMPTY_PASSWORD=yes 
+      - ALLOW_EMPTY_PASSWORD=yes
   app:
     #image: 'webdevops/php-apache:8.0-alpine'
     build: './docker/web/'
     ports:
-      - '8800:80'
+      - '80:80'
+      - '443:443' # 开放 https 需要的接口
+    depends_on:
+      - redis
     volumes:
       - './:/app'
-    depends_on:
-      mariadb:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
     environment:
-      - DB_HOST=mariadb
-      - DB_PORT=3306
-      - DB_USERNAME=root
       - DB_DATABASE=pushdeer
-      - DB_PASSWORD=theVeryp@ssw0rd
-volumes:
-  mariadb_data:
+      - DB_HOST=clouddb.com
+      - DB_PASSWORD=thep@ssw0rd
+      - DB_PORT=3306
+      - DB_TIMEZONE=+08:00
+      - DB_USERNAME=pushdeer
+      - APP_DEBUG=false
+      - GO_PUSH_IOS_TOPIC=com.pushdeer.self.ios
+      - GO_PUSH_IOS_CLIP_TOPIC=com.pushdeer.self.ios.Clip
