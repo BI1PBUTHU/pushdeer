@@ -1,5 +1,7 @@
 > ⚠️ 目前，官方架设的Android版本因接口权限停止无法使用，[详情请点击](https://github.com/easychen/pushdeer/issues/150)
 
+> ⚠️ 自架版服务器端需每年更新推送证书，如果之前架设的服务突然无法收到推送，请尝试拉取部署最新代码
+
 PushDeer是一个可以自行架设的无APP推送服务，同时也为因为某些原因无法使用无APP推送方案的同学提供有APP/自制设备方案。
 
 [🐙🐱 GitHub仓库](https://github.com/easychen/pushdeer) [🔮 中国大陆镜像仓库@Gitee](https://gitee.com/easychen/pushdeer)
@@ -159,18 +161,17 @@ function pushdeer_send($text, $desp = '', $type='text', $key = '[PUSHKEY]')
 
 然后运行以下代码：
 
-（大陆服务器使用）
-```
-git clone https://gitee.com/easychen/pushdeer.git
-cd pushdeer
-docker-compose -f docker-compose.self-hosted.yml up --build -d 
-```
-
-（海外服务器使用）
 ```
 git clone https://github.com/easychen/pushdeer.git
 cd pushdeer
 docker-compose -f docker-compose.self-hosted.yml up --build -d
+```
+
+如果你的服务器连接GitHub有困难，可以使用Gitee的代码，但需要核对是否为最新版本（有可能没同步）
+```
+git clone https://gitee.com/easychen/pushdeer.git
+cd pushdeer
+docker-compose -f docker-compose.self-hosted.yml up --build -d 
 ```
 
 > 如提示docker服务未安装/找不到/未启动，可在 docker-compose 前加 sudo 再试
@@ -181,6 +182,7 @@ docker-compose -f docker-compose.self-hosted.yml up --build -d
 
 如果您在部署中遇到问题，可按[调试文档](/doc/调试文档.md)定位并发现错误信息。
 
+<!--
 #### 单一容器部署方案
 
 对于很多不能运行docker-compose的容器环境，可以直接使用 pushdeer 镜像。该镜像中已经包含了 redis 服务，但需要通过环境变量指定数据库等信息：
@@ -190,6 +192,7 @@ docker run -e DB_DATABASE=* -e DB_HOST=* -e DB_PORT=*28740* -e DB_USERNAME=* -e 
 ```
 
 请将上述命令中的`*`替换为对应的数据库信息。
+-->
 
 ### 使用自架版客户端
 
